@@ -8,3 +8,7 @@ class Album(models.Model):
   # To be added later when new model Track will be aded
   # tracks = models.
   rating = models.DecimalField(max_digits=1, decimal_places=1, null=True, blank=True)
+
+
+  def __str__(self):
+    return f'{self.title} - {self.author} - {self.genre} - {self.release_date} - {self.rating}'
