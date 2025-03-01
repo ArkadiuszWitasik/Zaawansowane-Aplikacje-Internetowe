@@ -15,10 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from musicApp.views import all, details
+from musicApp.views import all, details, addAlbum, updateAlbum, deleteAlbum
 
 
 urlpatterns = [
     path('all/', all),
-    path('details/<int:album_id>/', details)
+    path('details/<int:album_id>/', details),
+    path('add-album/', addAlbum),
+    path('update-album/<int:album_id>/', updateAlbum),
+    path('delete-album/<int:album_id>/', deleteAlbum)
 ]
