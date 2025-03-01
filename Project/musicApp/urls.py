@@ -20,5 +20,5 @@ from musicApp.views import all, details
 
 urlpatterns = [
     path('all/', all),
-    path('details/', details)
+    path('details/<int:album_id>/', details)
 ]
