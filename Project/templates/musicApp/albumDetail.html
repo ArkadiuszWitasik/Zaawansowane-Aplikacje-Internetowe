@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Lista albumów</title>
+		<style>
+			.wrapper {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+			.container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.card {
+				background-color: cornsilk;
+				border-radius: 20px;
+				min-width: 250px;
+				padding-left: 10px;
+				padding-right: 10px;
+				padding-bottom: 10px;
+			}
+			.button {
+				background: lightblue;
+				text-decoration: none;
+				border-radius: 20px;
+				width: 100%;
+				color: black;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrapper">
+			<h1>Szczegóły albumu {{album.title}}</h1>
+			<div class="container">
+				<div class="card">
+					<p>Ocena {{album.rating}}</p>
+					<p>Wykonawca {{album.author}}</p>
+					<p>Gatunek {{album.genre}}</p>
+					<p>Data wydania {{album.release_date}}</p>
+
+					<a href="/musicApp/all" class="button">Powrót</a>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Lista albumów</title>
+		<style>
+			.wrapper {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+			.container {
+				display: flex;
+				gap: 10px;
+				width: 80%;
+			}
+			.card {
+				background-color: cornsilk;
+				border-radius: 20px;
+				min-width: 250px;
+				padding-left: 10px;
+				padding-right: 10px;
+				padding-bottom: 10px;
+			}
+			.cardHeader {
+				display: flex;
+				justify-content: space-between;
+			}
+			.cardFooter {
+				display: flex;
+				justify-content: space-between;
+			}
+			.button {
+				background: lightblue;
+				text-decoration: none;
+				border-radius: 20px;
+				width: 150px;
+				color: black;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrapper">
+			<h1>Lista albumów</h1>
+			<div class="container">
+				{% for album in all_albums %}
+				<div class="card">
+					<div class="cardHeader">
+						<p>{{album.title}}</p>
+						<p>{{album.rating}}</p>
+					</div>
+					<p>{{album.author}}, {{album.genre}}</p>
+					<div class="cardFooter">
+						<a href="/musicApp/details/{{album.id}}" class="button"
+							>Szczegóły</a
+						>
+						<p>{{album.release_date}}</p>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</body>
+</html>
