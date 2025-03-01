@@ -1,6 +1,6 @@
 from django.db import models
 
-class Album(modes.Model):
+class Album(models.Model):
   title = models.CharField(max_length=64, blank=False, unique=False)
   author = models.CharField(max_length=64, blank=False, unique=False)
   genre = models.CharField(max_length=64, blank=False, unique=False)
