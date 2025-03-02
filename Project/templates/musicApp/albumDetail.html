@@ -49,10 +49,12 @@
 			<h1>Szczegóły albumu {{album.title}}</h1>
 			<div class="container">
 				<div class="card">
+					{% comment %}
 					<p>Ocena {{album.rating}}</p>
 					<p>Wykonawca {{album.author}}</p>
 					<p>Gatunek {{album.genre}}</p>
 					<p>Data wydania {{album.release_date}}</p>
+					{% endcomment %}
 
 					<a href="/musicApp/all" class="button">Powrót</a>
 				</div>
