@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Usuwanie filmu</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+	<style>
+		body {
+			font-family: 'Mulish', sans-serif;
+		}
+	</style>
+	<body>
+		<h1>Czy na pewno chcesz usunąć z bazy film {{ film.tytul }} ?</h1>
+		<form method="post">
+			{% csrf_token %}
+			<button type="submit">Usuń film</button>
+		</form>
+	</body>
+</html>
