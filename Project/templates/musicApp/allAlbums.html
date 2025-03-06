@@ -24,31 +24,8 @@
 				gap: 10px;
 				width: 80%;
 			}
-			.card {
-				background-color: cornsilk;
-				border-radius: 20px;
-				min-width: 250px;
-				padding-left: 10px;
-				padding-right: 10px;
-				padding-bottom: 10px;
-			}
-			.cardHeader {
-				display: flex;
-				justify-content: space-between;
-			}
-			.cardFooter {
-				display: flex;
-				justify-content: space-between;
-			}
-			.button {
-				background: lightblue;
-				text-decoration: none;
-				border-radius: 20px;
-				width: 150px;
-				color: black;
-				display: flex;
-				justify-content: center;
-				align-items: center;
+			.item {
+				margin-top: 10px;
 			}
 		</style>
 	</head>
@@ -56,21 +33,17 @@
 		<div class="wrapper">
 			<h1>Lista albumów</h1>
 			<div class="container">
-				{% comment %} {% for album in all_albums %}
-				<div class="card">
-					<div class="cardHeader">
-						<p>{{album.title}}</p>
-						<p>{{album.rating}}</p>
-					</div>
-					<p>{{album.author}}, {{album.genre}}</p>
-					<div class="cardFooter">
-						<a href="/musicApp/details/{{album.id}}" class="button"
-							>Szczegóły</a
-						>
-						<p>{{album.release_date}}</p>
-					</div>
-				</div>
-				{% endfor %} {% endcomment %}
+				<ul>
+					{% for album in all_albums %}
+					<li>
+						<div class="item">
+							<span>{{album.title}} | </span>
+							<span>{{album.author}}</span>
+						</div>
+						<a href="/musicApp/details/{{album.id}}">Szczegóły</a>
+					</li>
+					{% endfor %}
+				</ul>
 			</div>
 		</div>
 	</body>

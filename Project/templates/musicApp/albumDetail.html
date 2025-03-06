@@ -24,39 +24,41 @@
 				justify-content: center;
 				align-items: center;
 			}
-			.card {
-				background-color: cornsilk;
-				border-radius: 20px;
-				min-width: 250px;
-				padding-left: 10px;
-				padding-right: 10px;
-				padding-bottom: 10px;
-			}
-			.button {
-				background: lightblue;
-				text-decoration: none;
-				border-radius: 20px;
-				width: 100%;
-				color: black;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-			}
 		</style>
 	</head>
 	<body>
 		<div class="wrapper">
 			<h1>Szczegóły albumu {{album.title}}</h1>
 			<div class="container">
-				<div class="card">
-					{% comment %}
-					<p>Ocena {{album.rating}}</p>
+				<div>
 					<p>Wykonawca {{album.author}}</p>
-					<p>Gatunek {{album.genre}}</p>
-					<p>Data wydania {{album.release_date}}</p>
-					{% endcomment %}
-
-					<a href="/musicApp/all" class="button">Powrót</a>
+					<p>Wydawnictwo {{albumDetails.major}}</p>
+					<p>Data wydania {{albumDetails.release_date}}</p>
+					<p>Ocena {{albumDetails.rating}}</p>
+					<hr />
+					<div>
+						{% for g in genre %}
+						<span>{{g.name}}, </span>
+						{% endfor %}
+					</div>
+					<hr />
+					<div>
+						<table>
+							<tr>
+								<th>Tytuł</th>
+								<th>Długość</th>
+							</tr>
+							{% for track in tracks %}
+							<tr>
+								<th>{{track.title}}</th>
+								<th>{{track.duration}}</th>
+							</tr>
+							{% endfor %}
+						</table>
+					</div>
+					<div>
+						<a href="/musicApp/all">Powrót</a>
+					</div>
 				</div>
 			</div>
 		</div>

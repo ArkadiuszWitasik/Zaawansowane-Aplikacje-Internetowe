@@ -2,7 +2,7 @@ from django.template import loader
 from django.shortcuts import render, redirect, get_object_or_404
 from musicApp.forms import AlbumForm
 from django.http import HttpResponse
-from musicApp.models import Album
+from musicApp.models import Album, AlbumDetails, Track, Genre
 
 def all(request):
   template = loader.get_template("musicApp/allAlbums.html")
@@ -13,7 +13,11 @@ def all(request):
 def details(request, album_id):
   template = loader.get_template("musicApp/albumDetail.html")
   album = Album.objects.get(id=album_id)
-  context= {'album': album}
+  albumDetails = AlbumDetails.objects.get(album=album_id)
+  tracks = Track.objects.filter(album=album)
+  genre = Genre.objects.filter(albums=album)
+  context = {'album': album, 'albumDetails': albumDetails, 'tracks': tracks, 'genre': genre}
+
   return HttpResponse(template.render(context, request))
 
 def addAlbum(request):
