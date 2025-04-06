@@ -1,3 +1,16 @@
-{% extends "index.html" %} {% block content %}
-<h2>Add artist</h2>
-{% endblock %}
+{% extends "index.html" %} {% block content %} {% if subbmited %}
+
+<h2>Wysłano informację do bazy danych</h2>
+
+<a href="{% url 'artists' %}" class="btn btn-primary">Lista artystów</a>
+
+{% else %}
+<h2>Dodaj artystę</h2>
+<div class="w-25">
+	<form action="" method="POST">
+		{% csrf_token %} {{ form.as_p }}
+
+		<input type="submit" value="Dodaj" class="btn btn-primary" />
+	</form>
+</div>
+{% endif %} {% endblock %}
