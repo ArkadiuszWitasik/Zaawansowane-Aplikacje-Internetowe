@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from .forms import ArtistForm
 from django.http import HttpResponseRedirect
+from .forms import ArtistForm
+from .models import Artist
 
 def home(request):
   return render(request, 'home.html')
@@ -9,7 +10,8 @@ def profile(request):
   return render(request, 'profile.html')
 
 def artists(request):
-  return render(request, 'artists.html')
+  artists = Artist.objects.all()
+  return render(request, 'artists.html', {'artists': artists})
 
 def albums(request):
   return render(request, 'albums.html')

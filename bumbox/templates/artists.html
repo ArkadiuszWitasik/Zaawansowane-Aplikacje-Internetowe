@@ -1,3 +1,22 @@
 {% extends "index.html" %} {% block content %}
-<h2>Artists</h2>
+<h2>Artyści</h2>
+<div class="d-flex mt-5 flex-wrap justify-content-center" style="gap: 20px">
+	{% for artist in artists %}
+	<div
+		class="d-flex flex-column border border-secoundary rounded-3"
+		style="width: 300px; height: 470px"
+	>
+		<img
+			src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFOX3ZbCU9f6n4BTst51ZyTq1wHX9XR3A98g&s"
+			class=""
+			alt="..."
+		/>
+		<div class="d-flex flex-column h-100 justify-content-between">
+			<h5>{{artist.name}}</h5>
+			<p class="text-start px-2">{{artist.description}}</p>
+			<a href="#" class="btn btn-primary">Lista albumów</a>
+		</div>
+	</div>
+	{% endfor %}
+</div>
 {% endblock %}
