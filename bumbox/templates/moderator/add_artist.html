@@ -7,7 +7,7 @@
 {% else %}
 <h2>Dodaj artystę</h2>
 <div class="w-25">
-	<form action="" method="POST">
+	<form action="" method="POST" enctype="multipart/form-data">
 		{% csrf_token %} {{ form.as_p }}
 
 		<input type="submit" value="Dodaj" class="btn btn-primary" />

@@ -5,14 +5,14 @@ from .models import Artist
 class ArtistForm(ModelForm):
   class Meta:
     model = Artist
-    fields = ('name', 'description', 'origin_country')
+    fields = ('name', 'description', 'picture')
     labels = {
       'name': '',
       'description': '',
-      'origin_country': '',
+      'picture': '',
     }
     widgets = {
       'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nazwa'}),
-      'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Opis'}),
-      'origin_country': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Kraj'}),
+      'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Opis', 'maxlength': 250}),
+      # 'picture': forms.ImageField()
     }

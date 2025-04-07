@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from .forms import ArtistForm
 from .models import Artist
@@ -11,7 +11,11 @@ def profile(request):
 
 def artists(request):
   artists = Artist.objects.all()
-  return render(request, 'artists.html', {'artists': artists})
+  return render(request, 'public/artists.html', {'artists': artists})
+
+def show_artist(request, pk):
+  artist = get_object_or_404(Artist, pk=pk)
+  return render(request, 'public/artist_details.html', {'artist': artist})
 
 def albums(request):
   return render(request, 'albums.html')
@@ -23,7 +27,7 @@ def add_artist(request):
   subbmited = False
 
   if request.method == "POST":
-    form = ArtistForm(request.POST)
+    form = ArtistForm(request.POST, request.FILES)
     if form.is_valid():
       form.save()
       return HttpResponseRedirect('/add_artist?subbmited=True')

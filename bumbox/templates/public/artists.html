@@ -6,15 +6,13 @@
 		class="d-flex flex-column border border-secoundary rounded-3"
 		style="width: 300px; height: 470px"
 	>
-		<img
-			src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFOX3ZbCU9f6n4BTst51ZyTq1wHX9XR3A98g&s"
-			class=""
-			alt="..."
-		/>
+		<img src="{{ artist.picture.url }}" />
 		<div class="d-flex flex-column h-100 justify-content-between">
 			<h5>{{artist.name}}</h5>
 			<p class="text-start px-2">{{artist.description}}</p>
-			<a href="#" class="btn btn-primary">Lista albumów</a>
+			<a href="{% url 'artist-details' artist.pk %}" class="btn btn-primary"
+				>Lista albumów</a
+			>
 		</div>
 	</div>
 	{% endfor %}

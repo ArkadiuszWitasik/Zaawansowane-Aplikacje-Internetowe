@@ -8,23 +8,24 @@ class Profile(models.Model):
 
 class Artist(models.Model):
   name = models.CharField(max_length=100)
-  description = models.TextField(blank=True)
-  origin_country = models.CharField(max_length=50, blank=True)
+  description = models.TextField(blank=False, max_length=250)
+  picture = models.ImageField(upload_to='images/', blank=True, null=True)
 
 class Album(models.Model):
   title = models.CharField(max_length=200)
   artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='albums')
-
-class Track(models.Model):
-  title = models.CharField(max_length=200)
-  album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='tracks')
-  duration = models.DurationField()
-  genre = models.CharField(max_length=50, choices=[
+  genre = models.CharField(max_length=50, blank=True, choices=[
     ('POP', 'Pop'),
     ('ROCK', 'Rock'),
     ('RAP', 'Rap'),
     ('OTHER', 'Other')
   ])
+  picture = models.ImageField(null=True, blank=True, upload_to='images/')
+
+class Track(models.Model):
+  title = models.CharField(max_length=200)
+  album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='tracks')
+  duration = models.DurationField()
 
 class Playlist(models.Model):
   name = models.CharField(max_length=100)
