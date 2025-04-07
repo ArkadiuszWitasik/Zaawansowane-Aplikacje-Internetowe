@@ -1,16 +1,11 @@
 {% extends "index.html" %} {% block content %}
-<h2>Artysta</h2>
-<div class="d-flex mt-5 flex-wrap justify-content-center" style="gap: 20px">
-	<div
-		class="d-flex flex-column border border-secoundary rounded-3"
-		style="width: 300px; height: 470px"
-	>
-		<img src="{{ artist.picture.url }}" />
-		<div class="d-flex flex-column h-100 justify-content-between">
-			<h5>{{artist.name}}</h5>
-			<p class="text-start px-2">{{artist.description}}</p>
-			<a href="#" class="btn btn-primary">Lista albumów</a>
-		</div>
-	</div>
-</div>
+<h2>{{artist.name}}</h2>
+<img src="{{ artist.picture.url }}" />
+<p>Opis => {{artist.description}}</p>
+
+<form action="{% url 'delete-artist' artist.pk %}" method="get">
+	<button type="submit">🗑️ Usuń artystę</button>
+</form>
+
+<h2>Albumy</h2>
 {% endblock %}

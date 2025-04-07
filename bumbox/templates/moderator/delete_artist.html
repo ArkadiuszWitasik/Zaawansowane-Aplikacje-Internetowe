@@ -1,0 +1,9 @@
+{% extends "index.html" %} {% block content %}
+<h2>Czy na pewno chcesz usunąć artystę "{{ artist.name }}"?</h2>
+
+<form method="post">
+	{% csrf_token %}
+	<button type="submit">Tak, usuń</button>
+	<a href="{% url 'artist-details' artist.pk %}">Anuluj</a>
+</form>
+{% endblock %}
