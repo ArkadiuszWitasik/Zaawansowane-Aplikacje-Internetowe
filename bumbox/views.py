@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
-from .forms import ArtistForm
+from .forms import ArtistForm, TrackFromSet, AlbumForm
 from .models import Artist
 
 def home(request):
@@ -49,6 +49,22 @@ def delete_artist(request, pk):
 
 def albums(request):
   return render(request, 'albums.html')
+
+def add_album(request):
+  if request.method == "POST":
+    form = AlbumForm(request.POST, request.FILES)
+    formset = TrackFromSet(request.POST)
+    if form.is_valid() and formset.is_valid():
+      album = form.save()
+      tracks = formset.save(commit=False)
+      for track in tracks:
+        track.album = album
+        track.save()
+      return HttpResponseRedirect('/albums')
+  else:
+    form = AlbumForm()
+    formset = TrackFromSet()
+  return render(request, 'moderator/add_album.html', {'form': form, 'formset': formset})
 
 def playlists(request):
   return render(request, 'playlists.html')
