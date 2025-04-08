@@ -64,7 +64,7 @@ class TrackForm(forms.ModelForm):
             }),
         }
 
-TrackFromSet = inlineformset_factory(
+TrackFormSet = inlineformset_factory(
   parent_model=Album,
   model=Track,
   form=TrackForm,

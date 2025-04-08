@@ -8,7 +8,11 @@
 		</div>
 
 		<div class="d-flex flex-column gap-2 justify-content-center">
-			<a class="btn btn-outline-secondary w-100">Edytuj informacje</a>
+			<a
+				class="btn btn-outline-secondary w-100"
+				href="{% url 'update-album' album.pk %}"
+				>Edytuj informacje</a
+			>
 			<a
 				class="btn btn-outline-danger w-100"
 				href="{% url 'delete-album' album.pk %}"

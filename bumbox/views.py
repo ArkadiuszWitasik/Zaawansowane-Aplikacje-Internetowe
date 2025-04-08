@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from django.db.models import Count
-from .forms import ArtistForm, TrackFromSet, AlbumForm
+from .forms import ArtistForm, TrackFormSet, AlbumForm
 from .models import Artist, Album, Track
 
 def home(request):
@@ -61,7 +61,7 @@ def show_album(request, pk):
 def add_album(request):
   if request.method == "POST":
     form = AlbumForm(request.POST, request.FILES)
-    formset = TrackFromSet(request.POST)
+    formset = TrackFormSet(request.POST)
     if form.is_valid() and formset.is_valid():
       album = form.save()
       tracks = formset.save(commit=False)
@@ -71,11 +71,22 @@ def add_album(request):
       return HttpResponseRedirect('/albums')
   else:
     form = AlbumForm()
-    formset = TrackFromSet()
+    formset = TrackFormSet()
   return render(request, 'moderator/add_album.html', {'form': form, 'formset': formset})
 
 def update_album(request, pk):
-  return render(request, 'moderator/update_album.html')
+    album = get_object_or_404(Album, pk=pk)
+    form = AlbumForm(request.POST or None, request.FILES or None, instance=album)
+
+    if form.is_valid():
+        form.save()
+
+        return redirect(f'/albums/{album.id}')
+
+    return render(request, 'moderator/update_album.html', {
+        'album': album,
+        'form': form,
+    })
 
 def delete_album(request, pk):
   album = get_object_or_404(Album, pk=pk)
