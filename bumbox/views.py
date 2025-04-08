@@ -16,7 +16,8 @@ def artists(request):
 
 def show_artist(request, pk):
   artist = get_object_or_404(Artist, pk=pk)
-  return render(request, 'public/artist_details.html', {'artist': artist})
+  albums = artist.albums.all().prefetch_related('tracks')
+  return render(request, 'public/artist_details.html', {'artist': artist, 'albums': albums})
 
 def add_artist(request):
   subbmited = False
@@ -72,6 +73,16 @@ def add_album(request):
     form = AlbumForm()
     formset = TrackFromSet()
   return render(request, 'moderator/add_album.html', {'form': form, 'formset': formset})
+
+def update_album(request, pk):
+  return render(request, 'moderator/update_album.html')
+
+def delete_album(request, pk):
+  album = get_object_or_404(Album, pk=pk)
+  if request.method == "POST":
+    album.delete()
+    return HttpResponseRedirect('/albums')
+  return render(request, 'moderator/delete_album.html', {'album': album})
 
 def playlists(request):
   return render(request, 'playlists.html')

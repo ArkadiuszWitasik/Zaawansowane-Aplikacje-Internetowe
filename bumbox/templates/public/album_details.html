@@ -1,15 +1,43 @@
 {% extends "index.html" %} {% block content %}
-<h2>{{album.title}}</h2>
-<img src="{{ album.picture.url }}" style="width: 250px; height: 250px" />
-<p>{{album.genre}}</p>
+<div class="d-flex flex-column">
+	<div class="d-flex justify-content-between">
+		<img src="{{ album.picture.url }}" style="width: 250px; height: 250px" />
+		<div class="d-flex flex-column justify-content-center">
+			<h2>{{album.title}}</h2>
+			<h4>{{album.genre}}</h4>
+		</div>
 
-<a class="btn btn-primary">Edytuj informacje</a>
-<a class="btn btn-primary">Usuń</a>
+		<div class="d-flex flex-column gap-2 justify-content-center">
+			<a class="btn btn-outline-secondary w-100">Edytuj informacje</a>
+			<a
+				class="btn btn-outline-danger w-100"
+				href="{% url 'delete-album' album.pk %}"
+				>Usuń</a
+			>
+		</div>
+	</div>
 
-{% for track in tracks %}
-<p>{{track.title}}</p>
-<p>{{track.duration}}</p>
-{% endfor %} {% comment %}
+	<div class="d-flex flex-column justify-content-center align-items-center">
+		<h2>Lista utworów</h2>
+		<table class="table table-striped w-50">
+			<thead>
+				<tr>
+					<th scope="col">Tytuł</th>
+					<th scope="col">Długość</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for track in tracks %}
+				<tr>
+					<td>{{track.title}}</td>
+					<td>{{track.duration}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% comment %}
 <form action="{% url 'delete-artist' artist.pk %}" method="get">
 	<button type="submit" class="btn btn-primary">Usuń artystę</button>
 </form>

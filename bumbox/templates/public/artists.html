@@ -10,8 +10,10 @@
 		<div class="d-flex flex-column h-100 justify-content-between">
 			<h5>{{artist.name}}</h5>
 			<p class="text-start px-2">{{artist.description}}</p>
-			<a href="{% url 'artist-details' artist.pk %}" class="btn btn-primary"
-				>Lista albumów</a
+			<a
+				href="{% url 'artist-details' artist.pk %}"
+				class="btn btn-outline-primary"
+				>Detale i lista albumów</a
 			>
 		</div>
 	</div>

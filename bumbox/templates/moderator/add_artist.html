@@ -2,7 +2,7 @@
 
 <h2>Wysłano informację do bazy danych</h2>
 
-<a href="{% url 'artists' %}" class="btn btn-primary">Lista artystów</a>
+<a href="{% url 'artists' %}" class="btn btn-outline-primary">Lista artystów</a>
 
 {% else %}
 <h2>Dodaj artystę</h2>
@@ -10,7 +10,7 @@
 	<form action="" method="POST" enctype="multipart/form-data">
 		{% csrf_token %} {{ form.as_p }}
 
-		<button type="submit" class="btn btn-primary">Dodaj</button>
+		<button type="submit" class="btn btn-outline-primary">Dodaj</button>
 	</form>
 </div>
 {% endif %} {% endblock %}

@@ -1,15 +1,60 @@
 {% extends "index.html" %} {% block content %}
-<h2>{{artist.name}}</h2>
-<img src="{{ artist.picture.url }}" style="width: 250px; height: 250px" />
-<p>Opis => {{artist.description}}</p>
+<div class="d-flex flex-column">
+	<div class="d-flex justify-content-between">
+		<div class="d-flex flex-row align-items-center">
+			<img src="{{ artist.picture.url }}" style="width: 300px; height: 250px" />
+			<p class="w-25">{{artist.description}}</p>
+		</div>
+		<div class="d-flex flex-column gap-2 justify-content-center">
+			<a
+				href="{% url 'update-artist' artist.pk %}"
+				class="btn btn-outline-secondary w-100"
+				>Edytuj informacje</a
+			>
+			<form action="{% url 'delete-artist' artist.pk %}" method="get">
+				<button type="submit" class="btn btn-outline-danger w-100">
+					Usuń artystę
+				</button>
+			</form>
+		</div>
+	</div>
 
-<a href="{% url 'update-artist' artist.pk %}" class="btn btn-primary"
-	>Edytuj informacje</a
->
+	<h2 class="text-start">{{artist.name}}</h2>
 
-<form action="{% url 'delete-artist' artist.pk %}" method="get">
-	<button type="submit" class="btn btn-primary">Usuń artystę</button>
-</form>
-
-<h2>Albumy</h2>
+	<div class="d-flex flex-column">
+		<h2>Albumy</h2>
+		{% for album in albums %}
+		<p class="d-inline-flex gap-1">
+			<a
+				class="btn btn-outline-secondary"
+				data-bs-toggle="collapse"
+				href="#{{album.id}}"
+				role="button"
+				aria-expanded="false"
+				aria-controls="collapseExample"
+			>
+				{{album.title}}
+			</a>
+		</p>
+		<div class="collapse w-50" id="{{album.id}}">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th scope="col">Tytuł</th>
+						<th scope="col">Długość</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for track in album.tracks.all %}
+					<tr>
+						<td>{{track.title}}</td>
+						<td>{{track.duration}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% endfor %}
+	</div>
+</div>
 {% endblock %}

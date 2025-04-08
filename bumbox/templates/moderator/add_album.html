@@ -1,19 +1,20 @@
 {% extends "index.html" %} {% block content %}
 <h2>Dodaj album</h2>
-<form method="post" enctype="multipart/form-data">
-	{% csrf_token %}
-	<fieldset>
-		<legend>Album</legend>
-		{{ form.as_p }}
-	</fieldset>
-	<fieldset>
-		<legend>Piosenki</legend>
-		{{ formset.management_form }} {% for f in formset %}
-		<br />
-		<div>{{ f.as_p }}</div>
-		{% endfor %}
-		<button type="submit">Zapisz</button>
-	</fieldset>
-</form>
-<a href="{% url 'albums' %}">Wróć do listy</a>
+<div class="w-25">
+	<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<fieldset>
+			<legend>Album</legend>
+			{{ form.as_p }}
+		</fieldset>
+		<fieldset>
+			<legend>Piosenki</legend>
+			{{ formset.management_form }} {% for f in formset %}
+			<br />
+			<div>{{ f.as_p }}</div>
+			{% endfor %}
+			<button type="submit" class="btn btn-outline-primary">Zapisz</button>
+		</fieldset>
+	</form>
+</div>
 {% endblock %}

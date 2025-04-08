@@ -1,11 +1,15 @@
 {% extends "index.html" %} {% block content %}
 <h2>Aktualizacja danych o {{artist.name}}</h2>
-<form action="" method="POST">
-	{% csrf_token %} {{ form.as_p }}
-	<input type="submit" value="Edytuj" class="btn btn-primary" />
-	<a href="{% url 'artist-details' artist.pk %}" class="btn btn-primary"
-		>Anuluj</a
-	>
-</form>
+<div class="w-25">
+	<form action="" method="POST">
+		{% csrf_token %} {{ form.as_p }}
+		<input type="submit" value="Edytuj" class="btn btn-outline-primary" />
+		<a
+			href="{% url 'artist-details' artist.pk %}"
+			class="btn btn-outline-danger"
+			>Anuluj</a
+		>
+	</form>
+</div>
 
 {% endblock %}

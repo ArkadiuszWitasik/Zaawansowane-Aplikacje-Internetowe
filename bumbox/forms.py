@@ -69,6 +69,6 @@ TrackFromSet = inlineformset_factory(
   model=Track,
   form=TrackForm,
   fields=('title', 'duration'),
-  extra=3,
+  extra=5,
   can_delete=False,
 )
