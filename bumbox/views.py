@@ -3,6 +3,8 @@ from django.http import HttpResponseRedirect
 from django.db.models import Count
 from .forms import ArtistForm, TrackFormSet, AlbumForm
 from .models import Artist, Album, Track
+from django.core.paginator import Paginator
+
 
 def home(request):
   return render(request, 'home.html')
@@ -12,6 +14,11 @@ def profile(request):
 
 def artists(request):
   artists = Artist.objects.all()
+
+  p = Paginator(Artist.objects.all(), 3)
+  page = request.GET.get('page')
+  artists = p.get_page(page)
+
   return render(request, 'public/artists.html', {'artists': artists})
 
 def show_artist(request, pk):
@@ -36,7 +43,7 @@ def add_artist(request):
 
 def update_artist(request, pk):
   artist = get_object_or_404(Artist, pk=pk)
-  form = ArtistForm(request.POST or None, instance=artist)
+  form = ArtistForm(request.POST or None, request.FILES or None, instance=artist)
   if form.is_valid():
     form.save()
     return redirect(f'/artists/{artist.id}')
@@ -50,7 +57,7 @@ def delete_artist(request, pk):
   return render(request, 'moderator/delete_artist.html', {'artist': artist})
 
 def albums(request):
-  albums = Album.objects.annotate(track_count=Count('tracks'))
+  albums = Album.objects.annotate(track_count=Count('tracks')).order_by("?")
   return render(request, 'public/albums.html', {'albums': albums})
 
 def show_album(request, pk):

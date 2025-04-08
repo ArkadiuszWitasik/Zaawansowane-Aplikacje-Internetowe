@@ -4,9 +4,13 @@
 	{% for artist in artists %}
 	<div
 		class="d-flex flex-column border border-secoundary rounded-3"
-		style="width: 250px; height: 470px"
+		style="width: 250px; min-height: 500px"
 	>
-		<img src="{{ artist.picture.url }}" style="width: 250px; height: 250px" />
+		<img
+			src="{{ artist.picture.url }}"
+			class=""
+			style="width: 250px; height: 250px; object-fit: fill"
+		/>
 		<div class="d-flex flex-column h-100 justify-content-between">
 			<h5>{{artist.name}}</h5>
 			<p class="text-start px-2">{{artist.description}}</p>
@@ -19,4 +23,22 @@
 	</div>
 	{% endfor %}
 </div>
+<div class="d-flex justify-content-center gap-2 mt-5 align-items-center">
+	{% if artists.has_previous %}
+	<a class="btn btn-light" href="?page=1">Początek</a>
+	<a class="btn btn-light" href="?page={{ artists.previous_page_number }}"
+		>&#8592; Poprzednia</a
+	>
+	{% endif %}
+	<h5>Strona {{artists.number}} z {{artists.paginator.num_pages}}</h5>
+	{% if artists.has_next %}
+	<a class="btn btn-light" href="?page={{ artists.next_page_number }}"
+		>&#8594; Następna</a
+	>
+	<a class="btn btn-light" href="?page={{ artists.paginator.num_pages}}"
+		>Koniec</a
+	>
+	{% endif %}
+</div>
+
 {% endblock %}
