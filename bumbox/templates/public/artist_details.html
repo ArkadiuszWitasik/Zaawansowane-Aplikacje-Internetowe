@@ -1,6 +1,6 @@
 {% extends "index.html" %} {% block content %}
 <h2>{{artist.name}}</h2>
-<img src="{{ artist.picture.url }}" />
+<img src="{{ artist.picture.url }}" style="width: 250px; height: 250px" />
 <p>Opis => {{artist.description}}</p>
 
 <a href="{% url 'update-artist' artist.pk %}" class="btn btn-primary"

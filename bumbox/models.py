@@ -6,10 +6,16 @@ class Profile(models.Model):
   nickname = models.CharField(max_length=50, blank=False)
   bio = models.TextField(blank=True)
 
+  def __str__(self):
+    return self.nickname
+
 class Artist(models.Model):
   name = models.CharField(max_length=100)
   description = models.TextField(blank=False, max_length=250)
   picture = models.ImageField(upload_to='images/', blank=True, null=True)
+
+  def __str__(self):
+    return self.name
 
 class Album(models.Model):
   title = models.CharField(max_length=200)
@@ -22,13 +28,22 @@ class Album(models.Model):
   ])
   picture = models.ImageField(null=True, blank=True, upload_to='images/')
 
+  def __str__(self):
+    return self.title
+
 class Track(models.Model):
   title = models.CharField(max_length=200)
   album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='tracks')
   duration = models.DurationField()
+
+  def __str__(self):
+    return self.title
 
 class Playlist(models.Model):
   name = models.CharField(max_length=100)
   profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='playlists')
   tracks = models.ManyToManyField(Track, related_name='playlists')
   created_at = models.DateTimeField(auto_now_add=True)
+
+  def __str__(self):
+    return self.name

@@ -1,0 +1,15 @@
+{% extends "index.html" %} {% block content %}
+<h2>Albumy</h2>
+<div class="d-flex mt-5 flex-wrap justify-content-center" style="gap: 20px">
+	{% for album in albums %}
+	<div class="d-flex flex-column border border-primary rounded-3">
+		<h3>{{album.title}}</h3>
+		<img src="{{ album.picture.url }}" style="width: 250px; height: 250px" />
+		<h4>Utowry: {{album.track_count}}</h4>
+		<a href="{% url 'album-details' album.pk %}" class="btn btn-primary"
+			>Lista piosenek</a
+		>
+	</div>
+	{%endfor%}
+</div>
+{% endblock %}

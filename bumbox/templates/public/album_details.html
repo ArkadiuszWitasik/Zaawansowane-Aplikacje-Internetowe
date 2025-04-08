@@ -1,0 +1,16 @@
+{% extends "index.html" %} {% block content %}
+<h2>{{album.title}}</h2>
+<img src="{{ album.picture.url }}" style="width: 250px; height: 250px" />
+<p>{{album.genre}}</p>
+
+<a class="btn btn-primary">Edytuj informacje</a>
+<a class="btn btn-primary">Usuń</a>
+
+{% for track in tracks %}
+<p>{{track.title}}</p>
+<p>{{track.duration}}</p>
+{% endfor %} {% comment %}
+<form action="{% url 'delete-artist' artist.pk %}" method="get">
+	<button type="submit" class="btn btn-primary">Usuń artystę</button>
+</form>
+{% endcomment %} {% endblock %}

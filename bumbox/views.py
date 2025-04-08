@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
+from django.db.models import Count
 from .forms import ArtistForm, TrackFromSet, AlbumForm
-from .models import Artist
+from .models import Artist, Album, Track
 
 def home(request):
   return render(request, 'home.html')
@@ -48,7 +49,13 @@ def delete_artist(request, pk):
   return render(request, 'moderator/delete_artist.html', {'artist': artist})
 
 def albums(request):
-  return render(request, 'albums.html')
+  albums = Album.objects.annotate(track_count=Count('tracks'))
+  return render(request, 'public/albums.html', {'albums': albums})
+
+def show_album(request, pk):
+  album = get_object_or_404(Album, pk=pk)
+  tracks = Track.objects.filter(album_id=pk)
+  return render(request, 'public/album_details.html', {'album': album, 'tracks': tracks})
 
 def add_album(request):
   if request.method == "POST":
