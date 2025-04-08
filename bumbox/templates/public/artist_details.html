@@ -3,8 +3,12 @@
 <img src="{{ artist.picture.url }}" />
 <p>Opis => {{artist.description}}</p>
 
+<a href="{% url 'update-artist' artist.pk %}" class="btn btn-primary"
+	>Edytuj informacje</a
+>
+
 <form action="{% url 'delete-artist' artist.pk %}" method="get">
-	<button type="submit">🗑️ Usuń artystę</button>
+	<button type="submit" class="btn btn-primary">Usuń artystę</button>
 </form>
 
 <h2>Albumy</h2>

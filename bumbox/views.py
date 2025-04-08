@@ -32,6 +32,14 @@ def add_artist(request):
 
   return render(request, 'moderator/add_artist.html', {'form': form, 'subbmited': subbmited})
 
+def update_artist(request, pk):
+  artist = get_object_or_404(Artist, pk=pk)
+  form = ArtistForm(request.POST or None, instance=artist)
+  if form.is_valid():
+    form.save()
+    return redirect(f'/artists/{artist.id}')
+  return render(request, 'moderator/update_artist.html', {'artist': artist, 'form': form})
+
 def delete_artist(request, pk):
   artist = get_object_or_404(Artist, pk=pk)
   if request.method == "POST":

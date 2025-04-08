@@ -3,7 +3,9 @@
 
 <form method="post">
 	{% csrf_token %}
-	<button type="submit">Tak, usuń</button>
-	<a href="{% url 'artist-details' artist.pk %}">Anuluj</a>
+	<button type="submit" class="btn btn-primary">Tak, usuń</button>
+	<a href="{% url 'artist-details' artist.pk %}" class="btn btn-primary"
+		>Anuluj</a
+	>
 </form>
 {% endblock %}
