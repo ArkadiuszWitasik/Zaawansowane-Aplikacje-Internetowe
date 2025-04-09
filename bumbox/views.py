@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.db.models import Count
@@ -21,6 +22,7 @@ def login_user(request):
     user = authenticate(request, username=username, password=password)
     if user is not None:
       login(request, user)
+      messages.success(request, "Udane logowanie!")
       return redirect('home')
     else:
       messages.success(request, "Błąd podczas logowania")
@@ -30,7 +32,23 @@ def login_user(request):
 
 def logout_user(request):
   logout(request)
+  messages.success(request, "Wylogowano!")
   return redirect('home')
+
+def register_user(request):
+  if request.method == "POST":
+    form = UserCreationForm(request.POST)
+    if form.is_valid():
+      form.save()
+      username = form.cleaned_data['username']
+      password = form.cleaned_data['password1']
+      user = authenticate(username=username, password=password)
+      login(request, user)
+      messages.success(request, "Udane logowanie!")
+      return redirect('home')
+  else:
+    form = UserCreationForm()
+  return render(request, 'authentication/register_user.html', {'form': form})
 
 def artists(request):
   artists = Artist.objects.all()

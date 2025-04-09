@@ -1,12 +1,14 @@
 {% extends "index.html" %} {% block content %}
 <div class="d-flex flex-column">
 	<div class="d-flex justify-content-between">
-		<img src="{{ album.picture.url }}" style="width: 250px; height: 250px" />
-		<div class="d-flex flex-column justify-content-center">
-			<h2>{{album.title}}</h2>
-			<h4>{{album.genre}}</h4>
+		<div class="d-flex">
+			<img src="{{ album.picture.url }}" style="width: 250px; height: 250px" />
+			<div class="d-flex flex-column justify-content-center">
+				<h2>{{album.title}}</h2>
+				<h4>{{album.genre}}</h4>
+			</div>
 		</div>
-
+		{% if user.is_authenticated and user.is_staff %}
 		<div class="d-flex flex-column gap-2 justify-content-center">
 			<a
 				class="btn btn-outline-secondary w-100"
@@ -19,6 +21,7 @@
 				>Usuń</a
 			>
 		</div>
+		{% endif %}
 	</div>
 
 	<div class="d-flex flex-column justify-content-center align-items-center">
@@ -29,8 +32,10 @@
 				<tr>
 					<th scope="col">Tytuł</th>
 					<th scope="col">Długość</th>
+					{% if user.is_authenticated and user.is_staff %}
 					<th scope="col"></th>
 					<th scope="col"></th>
+					{% endif %}
 				</tr>
 			</thead>
 			<tbody>
@@ -38,6 +43,7 @@
 				<tr>
 					<td>{{track.title}}</td>
 					<td>{{track.duration}}</td>
+					{% if user.is_authenticated and user.is_staff %}
 					<td>
 						<a
 							href="{% url 'update-track' album.pk track.id %}"
@@ -52,13 +58,16 @@
 							>&#10005;</a
 						>
 					</td>
+					{% endif %}
 				</tr>
 				{% endfor %}
 			</tbody>
 		</table>
+		{% if user.is_authenticated and user.is_staff %}
 		<a href="{% url 'add-track' album.pk %}" class="btn btn-outline-primary"
 			>Dodaj utwór</a
 		>
+		{% endif %}
 	</div>
 </div>
 {% endblock %}

@@ -5,6 +5,7 @@
 			<img src="{{ artist.picture.url }}" style="width: 250px; height: 250px" />
 			<p class="w-25">{{artist.description}}</p>
 		</div>
+		{% if user.is_authenticated and user.is_staff %}
 		<div class="d-flex flex-column gap-2 justify-content-center">
 			<a
 				href="{% url 'update-artist' artist.pk %}"
@@ -17,6 +18,7 @@
 				</button>
 			</form>
 		</div>
+		{% endif %}
 	</div>
 
 	<h2 class="text-start">{{artist.name}}</h2>

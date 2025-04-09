@@ -28,7 +28,7 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbarNavDropdown">
 					<ul class="navbar-nav">
-						{% if user.is_authenticated %}
+						{% if user.is_authenticated and not user.is_staff %}
 						<li class="nav-item">
 							<a class="nav-link" aria-current="page" href="{% url 'profile' %}"
 								>Profil</a
@@ -43,11 +43,11 @@
 						<li class="nav-item">
 							<a class="nav-link" href="{% url 'albums' %}">Albumy</a>
 						</li>
-						{% if user.is_authenticated %}
+						{% if user.is_authenticated and not user.is_staff %}
 						<li class="nav-item">
 							<a class="nav-link" href="{% url 'playlists' %}">Playlisty</a>
 						</li>
-						{% endif %} {% if user.is_authenticated %}
+						{% endif %} {% if user.is_authenticated and user.is_staff %}
 						<li class="nav-item dropdown">
 							<a
 								class="nav-link dropdown-toggle"
@@ -79,6 +79,11 @@
 						<li class="nav-item">
 							<a class="nav-link" href="{% url 'login-user' %}">Zaloguj</a>
 						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'register-user' %}"
+								>Utwórz konto</a
+							>
+						</li>
 						{% endif %}
 					</ul>
 				</div>
@@ -87,7 +92,18 @@
 		<center>
 			<div class="w-75">
 				{% if messages %} {% for message in messages %}
-				<div class="alert alert-danger" role="alert">{{message}}</div>
+				<div
+					class="alert alert-primary alert-dismissible fade show"
+					role="alert"
+				>
+					{{message}}
+					<button
+						type="button"
+						class="btn-close"
+						data-bs-dismiss="alert"
+						aria-label="Close"
+					></button>
+				</div>
 				{% endfor %} {% endif %} {% block content %} {% endblock %}
 			</div>
 		</center>
