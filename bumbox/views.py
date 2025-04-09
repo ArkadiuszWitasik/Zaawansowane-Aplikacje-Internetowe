@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.db.models import Count
 from .forms import ArtistForm, TrackFormSet, AlbumForm, TrackForm, AlbumFilterForm
@@ -11,6 +13,20 @@ def home(request):
 
 def profile(request):
   return render(request, 'profile.html')
+
+def login_user(request):
+  if request.method == "POST":
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+      login(request, user)
+      return redirect('home')
+    else:
+      messages.success(request, "Błąd podczas logowania")
+      return redirect('login-user')
+  else:
+    return render(request, 'authentication/login.html', {})
 
 def artists(request):
   artists = Artist.objects.all()
