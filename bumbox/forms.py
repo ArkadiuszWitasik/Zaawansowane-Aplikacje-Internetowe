@@ -1,6 +1,8 @@
 from django import forms
 from django.forms import ModelForm, inlineformset_factory
-from .models import Artist, Album, Track
+from .models import Artist, Album, Track, Profile
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 class ArtistForm(ModelForm):
   class Meta:
@@ -76,6 +78,29 @@ class AlbumFilterForm(forms.ModelForm):
             'class': 'form-control'
          })
       }
+
+class CustomUserCreationForm(UserCreationForm):
+    bio = forms.CharField(required=True, max_length=250, widget=forms.Textarea(attrs={
+        'class': 'form-control', 'placeholder': 'Kilka słów o sobie...'
+    }))
+    favourite_genre = forms.ChoiceField(choices=[
+    ('POP', 'Pop'),
+    ('ROCK', 'Rock'),
+    ('RAP', 'Rap'),
+    ('OTHER', 'Other')
+    ],widget=forms.Select(attrs={
+        'class': 'form-control', 'placeholder': ''
+    }))
+    class Meta:
+      model = User
+      fields = ['username', 'password1', 'password2', 'bio', 'favourite_genre']
+    def save(self, commit=True):
+       user = super().save(commit)
+       profile, created = Profile.objects.get_or_create(user=user)
+       profile.bio = self.cleaned_data['bio']
+       profile.favourite_genre = self.cleaned_data['favourite_genre']
+       profile.save()
+       return user
 
 TrackFormSet = inlineformset_factory(
   parent_model=Album,

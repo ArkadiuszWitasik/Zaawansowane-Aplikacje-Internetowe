@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
+# from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.db.models import Count
-from .forms import ArtistForm, TrackFormSet, AlbumForm, TrackForm, AlbumFilterForm
+from .forms import ArtistForm, TrackFormSet, AlbumForm, TrackForm, AlbumFilterForm, CustomUserCreationForm
 from .models import Artist, Album, Track
 from django.core.paginator import Paginator
 
@@ -37,17 +37,14 @@ def logout_user(request):
 
 def register_user(request):
   if request.method == "POST":
-    form = UserCreationForm(request.POST)
+    form = CustomUserCreationForm(request.POST)
     if form.is_valid():
-      form.save()
-      username = form.cleaned_data['username']
-      password = form.cleaned_data['password1']
-      user = authenticate(username=username, password=password)
+      user = form.save()
       login(request, user)
       messages.success(request, "Udane logowanie!")
       return redirect('home')
   else:
-    form = UserCreationForm()
+    form = CustomUserCreationForm()
   return render(request, 'authentication/register_user.html', {'form': form})
 
 def artists(request):
