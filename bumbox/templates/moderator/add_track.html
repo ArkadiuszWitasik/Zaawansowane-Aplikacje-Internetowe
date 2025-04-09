@@ -1,9 +1,11 @@
 {% extends "index.html" %} {% block content %}
 
-<h2>Dodaj utwór do albumu {{album.title}}</h2>
+<div class="w-25">
+	<h2>Dodaj utwór do albumu {{album.title}}</h2>
 
-<form method="POST">
-	{% csrf_token %} {{ form.as_p }}
-	<button type="submit" class="btn btn-outline-primary">Dodaj</button>
-</form>
+	<form method="POST">
+		{% csrf_token %} {{ form.as_p }}
+		<button type="submit" class="btn btn-outline-primary">Dodaj</button>
+	</form>
+</div>
 {% endblock %}

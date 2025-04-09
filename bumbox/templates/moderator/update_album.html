@@ -1,11 +1,13 @@
 {% extends "index.html" %} {% block content %}
-<h2>Aktualizacja danych o albumie {{ album.title }}</h2>
-<form method="POST" enctype="multipart/form-data">
-	{% csrf_token %} {{ form.as_p }}
+<div class="w-25">
+	<h2>Aktualizacja danych o albumie {{ album.title }}</h2>
+	<form method="POST" enctype="multipart/form-data">
+		{% csrf_token %} {{ form.as_p }}
 
-	<input type="submit" value="Edytuj" class="btn btn-outline-primary" />
-	<a href="{% url 'album-details' album.pk %}" class="btn btn-outline-danger"
-		>Anuluj</a
-	>
-</form>
+		<input type="submit" value="Edytuj" class="btn btn-outline-primary" />
+		<a href="{% url 'album-details' album.pk %}" class="btn btn-outline-danger"
+			>Anuluj</a
+		>
+	</form>
+</div>
 {% endblock %}
