@@ -64,6 +64,19 @@ class TrackForm(forms.ModelForm):
             }),
         }
 
+class AlbumFilterForm(forms.ModelForm):
+   class Meta:
+      model = Album
+      fields = ['genre']
+      labels = {
+         'genre': ''
+      }
+      widgets = {
+         'genre': forms.Select(attrs={
+            'class': 'form-control'
+         })
+      }
+
 TrackFormSet = inlineformset_factory(
   parent_model=Album,
   model=Track,

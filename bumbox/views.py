@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from django.db.models import Count
-from .forms import ArtistForm, TrackFormSet, AlbumForm, TrackForm
+from .forms import ArtistForm, TrackFormSet, AlbumForm, TrackForm, AlbumFilterForm
 from .models import Artist, Album, Track
 from django.core.paginator import Paginator
 
@@ -57,8 +57,11 @@ def delete_artist(request, pk):
   return render(request, 'moderator/delete_artist.html', {'artist': artist})
 
 def albums(request):
+  genre = request.GET.get('genre')
   albums = Album.objects.annotate(track_count=Count('tracks')).order_by("?")
-  return render(request, 'public/albums.html', {'albums': albums})
+  if genre:
+    albums = albums.filter(genre__icontains=genre)
+  return render(request, 'public/albums.html', {'albums': albums, 'form': AlbumFilterForm()})
 
 def show_album(request, pk):
   album = get_object_or_404(Album, pk=pk)
