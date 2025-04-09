@@ -28,6 +28,10 @@ def login_user(request):
   else:
     return render(request, 'authentication/login.html', {})
 
+def logout_user(request):
+  logout(request)
+  return redirect('home')
+
 def artists(request):
   artists = Artist.objects.all()
 

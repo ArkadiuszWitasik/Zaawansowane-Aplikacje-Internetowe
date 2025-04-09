@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('profile', views.profile, name='profile'),
     path('login_user', views.login_user, name='login-user'),
+    path('logout_user', views.logout_user, name='logout-user'),
     path('artists', views.artists, name='artists'),
     path('artists/<int:pk>/', views.show_artist, name="artist-details"),
     path('add_artist', views.add_artist, name='add-artist'),

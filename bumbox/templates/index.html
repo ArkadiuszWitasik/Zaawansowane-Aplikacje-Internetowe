@@ -73,8 +73,7 @@
 						</li>
 						{% endif %} {% if user.is_authenticated %}
 						<li class="nav-item">
-							{% comment %} href="{% url 'logout-user' %}" {% endcomment %}
-							<a class="nav-link">Wyloguj</a>
+							<a class="nav-link" href="{% url 'logout-user' %}">Wyloguj</a>
 						</li>
 						{% else %}
 						<li class="nav-item">
