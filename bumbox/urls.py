@@ -11,8 +11,11 @@ urlpatterns = [
     path('update_artist/<int:pk>/', views.update_artist, name='update-artist'),
     path('albums', views.albums, name='albums'),
     path('albums/<int:pk>/', views.show_album, name="album-details"),
+    path('add_album', views.add_album, name="add-album"),
     path('delete_album/<int:pk>/', views.delete_album, name='delete-album'),
     path('update_album/<int:pk>/', views.update_album, name='update-album'),
-    path('add_album', views.add_album, name="add-album"),
+    path('albums/<int:pk>/add_track', views.add_track, name="add-track"),
+    path('albums/<int:pk>/update_track/<int:pk2>/', views.update_track, name="update-track"),
+    path('albums/<int:pk>/delete_track/<int:pk2>/', views.delete_track, name="delete-track"),
     path('playlists', views.playlists, name='playlists'),
 ]

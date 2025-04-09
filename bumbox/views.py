@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from django.db.models import Count
-from .forms import ArtistForm, TrackFormSet, AlbumForm
+from .forms import ArtistForm, TrackFormSet, AlbumForm, TrackForm
 from .models import Artist, Album, Track
 from django.core.paginator import Paginator
 
@@ -30,7 +30,7 @@ def add_artist(request):
   subbmited = False
 
   if request.method == "POST":
-    form = ArtistForm(request.POST, request.FILES)
+    form = ArtistForm(request.POST or None, request.FILES or None)
     if form.is_valid():
       form.save()
       return HttpResponseRedirect('/add_artist?subbmited=True')
@@ -95,12 +95,43 @@ def update_album(request, pk):
         'form': form,
     })
 
+def add_track(request, pk):
+    album = get_object_or_404(Album, pk=pk)
+    form = TrackForm(request.POST or None)
+
+    if request.method == "POST":
+        if form.is_valid():
+            track = form.save(commit=False)
+            track.album = album
+            track.save()
+            return redirect(f'/albums/{album.id}')
+
+    return render(request, 'moderator/add_track.html', {'album': album, 'form': form})
+
 def delete_album(request, pk):
   album = get_object_or_404(Album, pk=pk)
   if request.method == "POST":
     album.delete()
     return HttpResponseRedirect('/albums')
   return render(request, 'moderator/delete_album.html', {'album': album})
+
+def update_track(request, pk, pk2):
+  album = get_object_or_404(Album, pk=pk)
+  track = get_object_or_404(Track, pk=pk2)
+  form = TrackForm(request.POST or None, instance=track)
+  if form.is_valid():
+    form.save()
+    return redirect(f'/albums/{album.id}')
+
+  return render(request, 'moderator/update_track.html', {'album': album, 'track': track, 'form': form})
+
+def delete_track(request, pk, pk2):
+  album = get_object_or_404(Album, pk=pk)
+  track = get_object_or_404(Track, pk=pk2)
+  if request.method == "POST":
+    track.delete()
+    return redirect(f'/albums/{album.id}')
+  return render(request, 'moderator/delete_track.html', {'album': album, 'track': track})
 
 def playlists(request):
   return render(request, 'playlists.html')

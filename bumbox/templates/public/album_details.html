@@ -23,11 +23,14 @@
 
 	<div class="d-flex flex-column justify-content-center align-items-center">
 		<h2>Lista utworów</h2>
+
 		<table class="table table-striped w-50">
 			<thead>
 				<tr>
 					<th scope="col">Tytuł</th>
 					<th scope="col">Długość</th>
+					<th scope="col"></th>
+					<th scope="col"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -35,14 +38,27 @@
 				<tr>
 					<td>{{track.title}}</td>
 					<td>{{track.duration}}</td>
+					<td>
+						<a
+							href="{% url 'update-track' album.pk track.id %}"
+							class="btn btn-outline-secondary"
+							>&#9998;</a
+						>
+					</td>
+					<td>
+						<a
+							href="{% url 'delete-track' album.pk track.id %}"
+							class="btn btn-outline-danger"
+							>&#10005;</a
+						>
+					</td>
 				</tr>
 				{% endfor %}
 			</tbody>
 		</table>
+		<a href="{% url 'add-track' album.pk %}" class="btn btn-outline-primary"
+			>Dodaj utwór</a
+		>
 	</div>
 </div>
-{% comment %}
-<form action="{% url 'delete-artist' artist.pk %}" method="get">
-	<button type="submit" class="btn btn-primary">Usuń artystę</button>
-</form>
-{% endcomment %} {% endblock %}
+{% endblock %}
