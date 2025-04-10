@@ -3,7 +3,6 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('profile', views.profile, name='profile'),
     path('login_user', views.login_user, name='login-user'),
     path('logout_user', views.logout_user, name='logout-user'),
     path('register_user', views.register_user, name='register-user'),
@@ -21,4 +20,7 @@ urlpatterns = [
     path('albums/<int:pk>/update_track/<int:pk2>/', views.update_track, name="update-track"),
     path('albums/<int:pk>/delete_track/<int:pk2>/', views.delete_track, name="delete-track"),
     path('playlists', views.playlists, name='playlists'),
+    path('add_playlist', views.add_playlist, name='add-playlist'),
+    path('update_playlist/<int:pk>/', views.update_playlist, name="update-playlist"),
+    path('delete_playlist/<int:pk>/', views.delete_playlist, name="delete-playlist"),
 ]

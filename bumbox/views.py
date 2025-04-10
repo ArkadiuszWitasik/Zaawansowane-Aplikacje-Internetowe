@@ -1,19 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
-# from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.db.models import Count
-from .forms import ArtistForm, TrackFormSet, AlbumForm, TrackForm, AlbumFilterForm, CustomUserCreationForm
-from .models import Artist, Album, Track
+from django.db.models import Count, Max, Min, Avg, Sum
+from .forms import ArtistForm, TrackFormSet, AlbumForm, TrackForm, AlbumFilterForm, CustomUserCreationForm, PlaylistForm
+from .models import Artist, Album, Track, Profile, Playlist
 from django.core.paginator import Paginator
 
 
 def home(request):
-  return render(request, 'home.html')
-
-def profile(request):
-  return render(request, 'profile.html')
+  return render(request, 'public/home.html')
 
 def login_user(request):
   if request.method == "POST":
@@ -171,5 +168,45 @@ def delete_track(request, pk, pk2):
     return redirect(f'/albums/{album.id}')
   return render(request, 'moderator/delete_track.html', {'album': album, 'track': track})
 
+@login_required
 def playlists(request):
-  return render(request, 'playlists.html')
+  profile = Profile.objects.get(user=request.user)
+  playlists = Playlist.objects.all().filter(profile_id=profile.pk).prefetch_related('tracks')
+  playlists_with_stats = []
+
+  for playlist in playlists:
+    stats = playlist.tracks.aggregate(longest=Max('duration'), shortest=Min('duration'), average=Avg('duration'), total=Sum('duration'))
+    playlists_with_stats.append({'playlist': playlist, 'stats': stats})
+
+  return render(request, 'user/playlists.html', {'playlists_with_stats': playlists_with_stats})
+
+@login_required
+def add_playlist(request):
+  form = PlaylistForm(request.POST or None)
+
+  if request.method == "POST":
+    if form.is_valid():
+      playlist = form.save(commit=False)
+      profile = Profile.objects.get(user=request.user)
+      playlist.profile = profile
+      playlist.save()
+      form.save_m2m()
+      return redirect('playlists')
+  return render(request, 'user/add_playlist.html', {'form': form})
+
+@login_required
+def update_playlist(request, pk):
+  playlist = get_object_or_404(Playlist, pk=pk, profile__user=request.user)
+  form = PlaylistForm(request.POST or None, instance=playlist)
+  if form.is_valid():
+    form.save()
+    return redirect('playlists')
+  return render(request, 'user/update_playlist.html', {'form': form, 'playlist': playlist})
+
+@login_required
+def delete_playlist(request, pk):
+  playlist = get_object_or_404(Playlist, pk=pk, profile__user=request.user)
+  if request.method == "POST":
+    playlist.delete()
+    return redirect('playlists')
+  return render(request, 'user/delete_playlist.html', {'playlist': playlist})

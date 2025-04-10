@@ -1,0 +1,54 @@
+{% extends "index.html" %} {% block content %}
+<h2>Playlisty</h2>
+<a href="{% url 'add-playlist' %}" class="btn btn-outline-primary mb-5"
+	>Utwórz playlistę</a
+>
+
+{% for item in playlists_with_stats %}
+
+<div class="d-flex gap-5 justify-content-between">
+	<div class="d-flex flex-column gap-2 justify-content-start align-items-start">
+		<h4>Playlista - {{item.playlist.name}}</h4>
+		<h5>Utworzona - {{item.playlist.created_at}}</h5>
+	</div>
+	<div class="d-flex flex-column justify-content-start align-items-start">
+		<p>Najdłuższa piosenka - {{item.stats.longest}}</p>
+		<p>Najkrótsza piosenka - {{item.stats.shortest}}</p>
+		<p>Średnia długość piosenki - {{item.stats.average}}</p>
+		<p>Sumaryczna długość playlisty - {{item.stats.total}}</p>
+	</div>
+	<div class="d-flex flex-column gap-2 justify-content-start align-items-start">
+		<a
+			href="{% url 'update-playlist' item.playlist.pk %}"
+			class="btn btn-outline-secondary w-100"
+			>Edytuj playliste</a
+		>
+		<a
+			href="{% url 'delete-playlist' item.playlist.pk %}"
+			class="btn btn-outline-danger w-100"
+			>Usuń playliste</a
+		>
+	</div>
+</div>
+
+{% if item.playlist.tracks.all %}
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th scope="col">Tytuł</th>
+			<th scope="col">Długość</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for track in item.playlist.tracks.all %}
+		<tr>
+			<td>{{track.title}}</td>
+			<td>{{track.duration}}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<hr class="divider" />
+{% endif %} {% endfor %} {% endblock %}

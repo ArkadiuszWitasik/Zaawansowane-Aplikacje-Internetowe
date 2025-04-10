@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm, inlineformset_factory
-from .models import Artist, Album, Track, Profile
+from .models import Artist, Album, Track, Profile, Playlist
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -101,6 +101,16 @@ class CustomUserCreationForm(UserCreationForm):
        profile.favourite_genre = self.cleaned_data['favourite_genre']
        profile.save()
        return user
+
+class PlaylistForm(forms.ModelForm):
+    class Meta:
+       model = Playlist
+       fields = ['name', 'tracks']
+       labels = {'name': '', 'tracks': ''}
+       widgets = {
+          'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nazwa playlisty'}),
+          'tracks': forms.SelectMultiple(attrs={'class': 'form-control', 'style': 'height: 500px;'}),
+          }
 
 TrackFormSet = inlineformset_factory(
   parent_model=Album,

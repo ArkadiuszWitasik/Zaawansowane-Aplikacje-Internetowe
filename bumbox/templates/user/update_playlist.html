@@ -1,0 +1,7 @@
+{% extends 'index.html' %} {% block content %}
+<h2>Edytuj Playlistę</h2>
+<form method="post">
+	{% csrf_token %} {{ form.as_p }}
+	<button type="submit" class="btn btn-outline-primary">Zapisz zmiany</button>
+</form>
+{% endblock %}
