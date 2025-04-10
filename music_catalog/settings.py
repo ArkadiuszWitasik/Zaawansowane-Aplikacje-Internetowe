@@ -26,7 +26,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bumbox.apps.BumboxConfig'
+    'bumbox.apps.BumboxConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

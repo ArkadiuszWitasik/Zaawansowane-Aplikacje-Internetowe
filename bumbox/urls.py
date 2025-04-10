@@ -1,5 +1,17 @@
 from django.urls import path
+from . import view_rest
 from . import views
+
+resturlpatterns = [
+  path('api/album/', view_rest.albums),
+  path('api/album/<int:pk>', view_rest.album),
+  path('api/artist/', view_rest.arists),
+  path('api/artist/<int:pk>', view_rest.artist),
+  path('api/track/', view_rest.tracks),
+  path('api/track/<int:pk>', view_rest.track),
+  path('api/playlist/', view_rest.playlists),
+  path('api/playlist/<int:pk>', view_rest.playlist),
+]
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -23,4 +35,4 @@ urlpatterns = [
     path('add_playlist', views.add_playlist, name='add-playlist'),
     path('update_playlist/<int:pk>/', views.update_playlist, name="update-playlist"),
     path('delete_playlist/<int:pk>/', views.delete_playlist, name="delete-playlist"),
-]
+] + resturlpatterns
