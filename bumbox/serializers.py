@@ -11,6 +11,14 @@ class ArtistSerializer(serializers.ModelSerializer):
     }
 
 class AlbumSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Album
+    fields = ['id', 'title', 'artist', 'genre']
+    extra_kwargs = {
+      'picture': {'required': False}
+    }
+
+class AlbumGetSerializer(serializers.ModelSerializer):
   artist = ArtistSerializer()
   class Meta:
     model = Album
@@ -19,14 +27,24 @@ class AlbumSerializer(serializers.ModelSerializer):
       'picture': {'required': False}
     }
 
-class TrackSerializer(serializers.ModelSerializer):
+class TrackSerializer:
+  class Meta:
+    model = Track
+    fields = ['id', 'title', 'album', 'duration']
+
+class TrackGetSerializer(serializers.ModelSerializer):
   album = AlbumSerializer()
   class Meta:
     model = Track
     fields = ['id', 'title', 'album', 'duration']
 
 class PlaylistSerializer(serializers.ModelSerializer):
-  tracks = TrackSerializer(many=True)
+  class Meta:
+    model = Playlist
+    fields = ['id', 'name', 'profile', 'tracks', 'created_at']  
+
+class PlaylistGetSerializer(serializers.ModelSerializer):
+  tracks = TrackGetSerializer(many=True)
   total_duration = serializers.SerializerMethodField()
   average_duration = serializers.SerializerMethodField()
   shortest_track = serializers.SerializerMethodField()

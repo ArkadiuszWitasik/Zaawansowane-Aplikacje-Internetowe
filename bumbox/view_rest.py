@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Artist, Album, Track, Playlist
-from .serializers import ArtistSerializer, AlbumSerializer, TrackSerializer, PlaylistSerializer
+from .serializers import ArtistSerializer, AlbumSerializer, AlbumGetSerializer, TrackSerializer, TrackGetSerializer, PlaylistSerializer, PlaylistGetSerializer
 
 @api_view(['GET', 'POST'])
 def artists(request):
@@ -43,7 +43,7 @@ def artist(request, pk):
 def albums(request):
   if request.method == "GET":
     albums = Album.objects.all()
-    serializer = AlbumSerializer(albums, many=True)
+    serializer = AlbumGetSerializer(albums, many=True)
     return Response(serializer.data)
   elif request.method == "POST":
     serializer = AlbumSerializer(data=request.data)
@@ -61,7 +61,7 @@ def album(request, pk):
     return Response(status=status.HTTP_404_NOT_FOUND) 
 
   if request.method == "GET":
-    serializer = AlbumSerializer(album)
+    serializer = AlbumGetSerializer(album)
     return Response(serializer.data)
   elif request.method == "PUT":
     serializer = AlbumSerializer(album, data=request.data, partial=True)
@@ -77,7 +77,7 @@ def album(request, pk):
 def tracks(request):
   if request.method == "GET":
     tracks = Track.objects.all()
-    serializer = TrackSerializer(tracks, many=True)
+    serializer = TrackGetSerializer(tracks, many=True)
     return Response(serializer.data)
   elif request.method == "POST":
     serializer = TrackSerializer(data=request.data)
@@ -95,7 +95,7 @@ def track(request, pk):
     return Response(status=status.HTTP_404_NOT_FOUND) 
 
   if request.method == "GET":
-    serializer = TrackSerializer(track)
+    serializer = TrackGetSerializer(track)
     return Response(serializer.data)
   elif request.method == "PUT":
     serializer = TrackSerializer(track, data=request.data, partial=True)
@@ -111,7 +111,7 @@ def track(request, pk):
 def playlists(request):
   if request.method == "GET":
     playlists = Playlist.objects.all()
-    serializer = PlaylistSerializer(playlists, many=True)
+    serializer = PlaylistGetSerializer(playlists, many=True)
     return Response(serializer.data)
   elif request.method == "POST":
     serializer = PlaylistSerializer(data=request.data)
@@ -129,7 +129,7 @@ def playlist(request, pk):
     return Response(status=status.HTTP_404_NOT_FOUND) 
 
   if request.method == "GET":
-    serializer = PlaylistSerializer(playlist)
+    serializer = PlaylistGetSerializer(playlist)
     return Response(serializer.data)
   elif request.method == "PUT":
     serializer = PlaylistSerializer(playlist, data=request.data, partial=True)
