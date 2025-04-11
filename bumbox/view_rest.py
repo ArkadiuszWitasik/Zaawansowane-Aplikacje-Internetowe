@@ -1,11 +1,12 @@
-from django.http import JsonResponse
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
-from .models import Artist, Album, Track, Playlist
-from .serializers import ArtistSerializer, AlbumSerializer, AlbumGetSerializer, TrackSerializer, TrackGetSerializer, PlaylistSerializer, PlaylistGetSerializer
+from .models import Artist, Album, Track, Playlist, Profile
+from .serializers import ArtistSerializer, AlbumSerializer, AlbumGetSerializer, TrackSerializer, TrackGetSerializer, PlaylistSerializer, PlaylistGetSerializer, ProfileSerializer, UserSerializer
 
 @api_view(['GET', 'POST'])
+@permission_classes([AllowAny])
 def artists(request):
   if request.method == "GET":
     artists = Artist.objects.all()
@@ -20,6 +21,7 @@ def artists(request):
       return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def artist(request, pk):
   try:
     artist = Artist.objects.get(pk=pk)
@@ -40,6 +42,7 @@ def artist(request, pk):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
+@permission_classes([AllowAny])
 def albums(request):
   if request.method == "GET":
     albums = Album.objects.all()
@@ -54,6 +57,7 @@ def albums(request):
       return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def album(request, pk):
   try:
     album = Album.objects.get(pk=pk)
@@ -74,6 +78,7 @@ def album(request, pk):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
+@permission_classes([AllowAny])
 def tracks(request):
   if request.method == "GET":
     tracks = Track.objects.all()
@@ -88,6 +93,7 @@ def tracks(request):
       return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def track(request, pk):
   try:
     track = Track.objects.get(pk=pk)
@@ -108,6 +114,7 @@ def track(request, pk):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
+@permission_classes([AllowAny])
 def playlists(request):
   if request.method == "GET":
     playlists = Playlist.objects.all()
@@ -122,6 +129,7 @@ def playlists(request):
       return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def playlist(request, pk):
   try:
     playlist = Playlist.objects.get(pk=pk)
@@ -140,3 +148,21 @@ def playlist(request, pk):
   elif request.method == "DELETE":
     playlist.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_user(request):
+    if request.method == 'POST':
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if not hasattr(user, 'profile'):
+                profile_data = {
+                    'user': user,
+                    'bio': request.data.get('bio', ''),
+                    'favourite_genre': request.data.get('favourite_genre', ''),
+                }
+                Profile.objects.create(**profile_data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

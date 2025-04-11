@@ -1,6 +1,17 @@
 from rest_framework import serializers
 from .models import Album, Artist, Playlist, Profile, Track
+from django.contrib.auth.models import User
 from datetime import timedelta
+
+class UserSerializer(serializers.ModelSerializer):
+   class Meta:
+      model = User
+      fields = ['username', 'password']
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['bio', 'favourite_genre']
 
 class ArtistSerializer(serializers.ModelSerializer):
   class Meta:

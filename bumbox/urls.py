@@ -1,8 +1,10 @@
 from django.urls import path
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from . import view_rest
 from . import views
 
 resturlpatterns = [
+  path('api/create_user', view_rest.create_user),
   path('api/album/', view_rest.albums),
   path('api/album/<int:pk>', view_rest.album),
   path('api/artist/', view_rest.artists),
@@ -11,6 +13,9 @@ resturlpatterns = [
   path('api/track/<int:pk>', view_rest.track),
   path('api/playlist/', view_rest.playlists),
   path('api/playlist/<int:pk>', view_rest.playlist),
+  path('api/token', TokenObtainPairView.as_view()),
+  path('api/token/refresh/', TokenRefreshView.as_view()),
+  path('api/token/verify/', TokenVerifyView.as_view()),
 ]
 
 urlpatterns = [
