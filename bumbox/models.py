@@ -17,7 +17,7 @@ class Profile(models.Model):
 class Artist(models.Model):
   name = models.CharField(max_length=100)
   description = models.TextField(blank=False, max_length=250)
-  picture = models.ImageField(upload_to='images/', blank=True )
+  picture = models.ImageField(upload_to='images/', blank=True)
 
   def __str__(self):
     return self.name
@@ -31,7 +31,7 @@ class Album(models.Model):
     ('RAP', 'Rap'),
     ('OTHER', 'Other')
   ])
-  picture = models.ImageField(blank=False, upload_to='images/')
+  picture = models.ImageField(blank=True, upload_to='images/')
 
   def __str__(self):
     return self.title

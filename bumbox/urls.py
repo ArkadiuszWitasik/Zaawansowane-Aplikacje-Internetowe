@@ -5,7 +5,7 @@ from . import views
 resturlpatterns = [
   path('api/album/', view_rest.albums),
   path('api/album/<int:pk>', view_rest.album),
-  path('api/artist/', view_rest.arists),
+  path('api/artist/', view_rest.artists),
   path('api/artist/<int:pk>', view_rest.artist),
   path('api/track/', view_rest.tracks),
   path('api/track/<int:pk>', view_rest.track),

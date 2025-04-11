@@ -6,109 +6,137 @@ from .models import Artist, Album, Track, Playlist
 from .serializers import ArtistSerializer, AlbumSerializer, TrackSerializer, PlaylistSerializer
 
 @api_view(['GET', 'POST'])
-def arists(request):
+def artists(request):
   if request.method == "GET":
     artists = Artist.objects.all()
     serializer = ArtistSerializer(artists, many=True)
-    return JsonResponse({'artists': serializer.data})
-  if request.method == "POST":
+    return Response(serializer.data)
+  elif request.method == "POST":
     serializer = ArtistSerializer(data=request.data)
     if serializer.is_valid():
       serializer.save()
-      return Response(serializer.data, status=status.HTTP_200_OK)
-  return JsonResponse({'message': 'message'})
+      return Response(serializer.data)
+    else:
+      return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def arist(request, pk):
+def artist(request, pk):
   try:
-    arist = arist.objects.get(pk=pk)
-  except arist.DoesNotExist:
+    artist = Artist.objects.get(pk=pk)
+  except artist.DoesNotExist:
     return Response(status=status.HTTP_404_NOT_FOUND) 
 
   if request.method == "GET":
-    pass
+    serializer = ArtistSerializer(artist)
+    return Response(serializer.data)
   elif request.method == "PUT":
-    pass
+    serializer = ArtistSerializer(artist, data=request.data, partial=True)
+    if serializer.is_valid():
+      serializer.save()
+      return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
   elif request.method == "DELETE":
-    pass
+    artist.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
 def albums(request):
   if request.method == "GET":
     albums = Album.objects.all()
     serializer = AlbumSerializer(albums, many=True)
-    return JsonResponse({'albums': serializer.data})
-  if request.method == "POST":
+    return Response(serializer.data)
+  elif request.method == "POST":
     serializer = AlbumSerializer(data=request.data)
     if serializer.is_valid():
       serializer.save()
-      return Response(serializer.data, status=status.HTTP_200_OK)
-  return JsonResponse({'message': 'message'})
+      return Response(serializer.data)
+    else:
+      return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def album(request, pk):
   try:
-    album = album.objects.get(pk=pk)
+    album = Album.objects.get(pk=pk)
   except album.DoesNotExist:
     return Response(status=status.HTTP_404_NOT_FOUND) 
 
   if request.method == "GET":
-    pass
+    serializer = AlbumSerializer(album)
+    return Response(serializer.data)
   elif request.method == "PUT":
-    pass
+    serializer = AlbumSerializer(album, data=request.data, partial=True)
+    if serializer.is_valid():
+      serializer.save()
+      return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
   elif request.method == "DELETE":
-    pass
+    album.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
 def tracks(request):
   if request.method == "GET":
     tracks = Track.objects.all()
     serializer = TrackSerializer(tracks, many=True)
-    return JsonResponse({'tracks': serializer.data})
-  if request.method == "POST":
+    return Response(serializer.data)
+  elif request.method == "POST":
     serializer = TrackSerializer(data=request.data)
     if serializer.is_valid():
       serializer.save()
-      return Response(serializer.data, status=status.HTTP_200_OK)
-  return JsonResponse({'message': 'message'})
+      return Response(serializer.data)
+    else:
+      return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def track(request, pk):
   try:
-    track = track.objects.get(pk=pk)
+    track = Track.objects.get(pk=pk)
   except track.DoesNotExist:
     return Response(status=status.HTTP_404_NOT_FOUND) 
 
   if request.method == "GET":
-    pass
+    serializer = TrackSerializer(track)
+    return Response(serializer.data)
   elif request.method == "PUT":
-    pass
+    serializer = TrackSerializer(track, data=request.data, partial=True)
+    if serializer.is_valid():
+      serializer.save()
+      return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
   elif request.method == "DELETE":
-    pass
+    track.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
 def playlists(request):
   if request.method == "GET":
     playlists = Playlist.objects.all()
     serializer = PlaylistSerializer(playlists, many=True)
-    return JsonResponse({'playlists': serializer.data})
-  if request.method == "POST":
+    return Response(serializer.data)
+  elif request.method == "POST":
     serializer = PlaylistSerializer(data=request.data)
     if serializer.is_valid():
       serializer.save()
-      return Response(serializer.data, status=status.HTTP_200_OK)
-  return JsonResponse({'message': 'message'})
+      return Response(serializer.data)
+    else:
+      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def playlist(request, pk):
   try:
-    playlist = playlist.objects.get(pk=pk)
+    playlist = Playlist.objects.get(pk=pk)
   except playlist.DoesNotExist:
     return Response(status=status.HTTP_404_NOT_FOUND) 
 
   if request.method == "GET":
-    pass
+    serializer = PlaylistSerializer(playlist)
+    return Response(serializer.data)
   elif request.method == "PUT":
-    pass
+    serializer = PlaylistSerializer(playlist, data=request.data, partial=True)
+    if serializer.is_valid():
+      serializer.save()
+      return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
   elif request.method == "DELETE":
-    pass
+    playlist.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
