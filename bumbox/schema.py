@@ -2,6 +2,7 @@ import graphene
 from graphene_django import DjangoObjectType
 from graphene_django.forms.mutation import DjangoModelFormMutation
 from django import forms
+from datetime import timedelta
 from .models import Artist, Album, Track, Playlist
 
 class ArtistType(DjangoObjectType):
@@ -60,6 +61,133 @@ class CreatePlaylist(DjangoModelFormMutation):
   class Meta:
     form_class = PlaylistForm
 
+class UpdateArtist(graphene.Mutation):
+  class Arguments:
+    id = graphene.ID(required=True)
+    name = graphene.String()
+    description = graphene.String()
+
+  artist = graphene.Field(lambda: ArtistType)
+
+  def mutate(self, info, id, name=None, description=None):
+    artist = Artist.objects.get(pk=id)
+    if name:
+      artist.name = name
+    if description:
+      artist.description = description
+    artist.save()
+    return UpdateArtist(artist=artist)
+
+class UpdateAlbum(graphene.Mutation):
+  class Arguments:
+    id = graphene.ID(required=True)
+    title = graphene.String()
+    genre = graphene.String()
+    artist_id = graphene.ID()
+  
+  album = graphene.Field(lambda: AlbumType)
+
+  def mutate(self, info, id, title=None, genre=None, artist_id=None):
+    album = Album.objects.get(pk=id)
+    if title:
+      album.title = title
+    if genre:
+      album.genre = genre
+    if artist_id:
+      artist = Artist.objects.get(pk=artist_id)
+      album.artist = artist
+    album.save()
+    return UpdateAlbum(album=album)
+
+class UpdateTrack(graphene.Mutation):
+  class Arguments:
+    id = graphene.ID(required=True)
+    title = graphene.String()
+    duration = graphene.String()
+  track = graphene.Field(lambda: TrackType)
+
+  def mutate(self, info, id, title=None, duration=None):
+    track = Track.objects.get(pk=id)
+    if title:
+      track.title = title
+    if duration:
+      h, m, s = map(int, duration.split(':'))
+      track.duration = timedelta(hours=h, minutes=m, seconds=s)
+    track.save()
+    return UpdateTrack(track=track)
+
+class UpdatePlaylist(graphene.Mutation):
+  class Arguments:
+    id = graphene.ID(required=True)
+    name = graphene.String()
+    profile = graphene.ID()
+    tracks = graphene.List(graphene.ID)
+  playlist = graphene.Field(lambda: PlaylistType)
+  
+  def mutate(self, info, id, name=None, tracks=None):
+    playlist = Playlist.objects.get(pk=id)
+    updated_tracks = []
+    if name:
+      playlist.name = name
+    if tracks:
+      for track in tracks:
+        try:
+          track = Track.objects.get(pk=track)
+          updated_tracks.append(track)
+        except Track.DoesNotExist:
+          continue
+      playlist.tracks = updated_tracks
+    playlist.save()
+    return UpdatePlaylist(playlist=playlist)
+
+class DeleteArtist(graphene.Mutation):
+  class Arguments:
+    id = graphene.ID(required=True)
+  success = graphene.Boolean()
+  def mutate(self, info, id):
+    try:
+      artist = Artist.objects.get(pk=id)
+      artist.delete()
+      return DeleteArtist(success=True)
+    except Artist.DoesNotExist:
+      return DeleteArtist(success=False)
+
+class DeleteAlbum(graphene.Mutation):
+  class Arguments:
+    id = graphene.ID(required=True)
+  success = graphene.Boolean()
+  def mutate(self, info, id):
+    try:
+      album = Album.objects.get(pk=id)
+      album.delete()
+      return DeleteAlbum(success=True)
+    except:
+      return DeleteAlbum(success=False)
+    
+class DeleteTrack(graphene.Mutation):
+  class Arguments:
+    id = graphene.ID(required=True)
+  success = graphene.Boolean()
+  def mutate(self, info, id):
+    try:
+      track = Track.objects.get(pk=id)
+      track.delete()
+      return DeleteTrack(success=True)
+    except:
+      return DeleteTrack(success=False)
+    
+class DeletePlaylist(graphene.Mutation):
+  class Arguments:
+    id = graphene.ID(required=True)
+  success = graphene.Boolean()
+  def mutate(self, info, id):
+    try:
+      playlist = Playlist.objects.get(pk=id)
+      playlist.delete()
+      return DeletePlaylist(success=True)
+    except Playlist.DoesNotExist:
+      return DeletePlaylist(success=False)
+    
 class Query(graphene.ObjectType):
   all_artists = graphene.List(ArtistType)
   artist = graphene.Field(ArtistType, id=graphene.Int(required=True))
@@ -99,5 +227,13 @@ class Mutation(graphene.ObjectType):
   create_album = CreateAlbum.Field()
   create_track = CreateTrack.Field()
   create_playlist = CreatePlaylist.Field()
+  update_artist = UpdateArtist.Field()
+  update_album = UpdateAlbum.Field()
+  update_track = UpdateTrack.Field()
+  update_playlist = UpdatePlaylist.Field()
+  delete_artist = DeleteArtist.Field()
+  delete_album = DeleteAlbum.Field()
+  delete_track = DeleteTrack.Field()
+  delete_playlist = DeletePlaylist.Field()
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
