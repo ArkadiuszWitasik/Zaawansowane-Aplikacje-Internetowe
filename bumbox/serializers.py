@@ -38,7 +38,7 @@ class AlbumGetSerializer(serializers.ModelSerializer):
       'picture': {'required': False}
     }
 
-class TrackSerializer:
+class TrackSerializer(serializers.ModelSerializer):
   class Meta:
     model = Track
     fields = ['id', 'title', 'album', 'duration']
