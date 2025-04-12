@@ -62,21 +62,37 @@ class CreatePlaylist(DjangoModelFormMutation):
 
 class Query(graphene.ObjectType):
   all_artists = graphene.List(ArtistType)
+  artist = graphene.Field(ArtistType, id=graphene.Int(required=True))
   all_albums = graphene.List(AlbumType)
+  album = graphene.Field(AlbumType, id=graphene.Int(required=True))
   all_tracks = graphene.List(TrackType)
+  track = graphene.Field(TrackType, id=graphene.Int(required=True))
   all_playlists = graphene.List(PlaylistType)
+  playlist = graphene.Field(PlaylistType, id=graphene.Int(required=True))
 
-  def resolve_all_artists(root, info):
+  def resolve_all_artists(self, info):
     return Artist.objects.all()
   
-  def resolve_all_albums(root, info):
-      return Album.objects.all()
+  def resolve_artist(self, info, id):
+    return Artist.objects.get(id=id)
 
-  def resolve_all_tracks(root, info):
+  def resolve_all_albums(self, info):
+    return Album.objects.all()
+
+  def resolve_album(self, info, id):
+    return Album.objects.get(id=id)
+
+  def resolve_all_tracks(self, info):
       return Track.objects.all()
 
-  def resolve_all_playlists(root, info):
+  def resolve_track(self, info, id):
+    return Track.objects.get(id=id)
+
+  def resolve_all_playlists(self, info):
       return Playlist.objects.all()
+
+  def resolve_playlist(self, info, id):
+    return Playlist.objects.get(id=id)
 
 class Mutation(graphene.ObjectType):
   create_artist = CreateArtist.Field()
