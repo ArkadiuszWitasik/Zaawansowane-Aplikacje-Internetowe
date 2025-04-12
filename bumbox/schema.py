@@ -19,6 +19,9 @@ class TrackType(DjangoObjectType):
   class Meta:
     model = Track
     fields = "__all__"
+  duration = graphene.Float()
+  def resolve_duration(self, info):
+    return self.duration.total_seconds() if self.duration else None
 
 class PlaylistType(DjangoObjectType):
   class Meta:
@@ -136,7 +139,7 @@ class UpdatePlaylist(graphene.Mutation):
           updated_tracks.append(track)
         except Track.DoesNotExist:
           continue
-      playlist.tracks = updated_tracks
+      playlist.tracks.set(updated_tracks)
     playlist.save()
     return UpdatePlaylist(playlist=playlist)
 
