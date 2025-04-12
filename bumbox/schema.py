@@ -1,9 +1,21 @@
 import graphene
+from graphql_jwt.decorators import login_required
 from graphene_django import DjangoObjectType
 from graphene_django.forms.mutation import DjangoModelFormMutation
+from django.contrib.auth.models import User
 from django import forms
 from datetime import timedelta
-from .models import Artist, Album, Track, Playlist
+from .models import Artist, Album, Track, Playlist, Profile
+
+class UserType(DjangoObjectType):
+  class Meta:
+    model = User
+    fields = ['id', 'username', 'password']
+
+class ProfileType(DjangoObjectType):
+  class Meta:
+    model = Profile
+    fields = ['id', 'user', 'bio', 'favourite_genre']
 
 class ArtistType(DjangoObjectType):
   class Meta:
@@ -64,6 +76,28 @@ class CreatePlaylist(DjangoModelFormMutation):
   class Meta:
     form_class = PlaylistForm
 
+class CreateUserProfile(graphene.Mutation):
+  class Arguments:
+    username = graphene.String(required=True)
+    password = graphene.String(required=True)
+    bio = graphene.String()
+    favourite_genre = graphene.String()
+  user = graphene.Field(lambda: UserType)
+  profile = graphene.Field(lambda: ProfileType)
+
+  def mutate(self, info, username, password, bio=None, favourite_genre=None):
+    user, created = User.objects.get_or_create(username=username)
+    if created:
+      user.set_password(password)
+      user.save()
+    profile, profile_created = Profile.objects.get_or_create(user=user)
+    if profile_created:
+      profile.bio = bio or ""
+      profile.favourite_genre = favourite_genre or ""
+      profile.save()
+
+    return CreateUserProfile(user=user, profile=profile)
+    
 class UpdateArtist(graphene.Mutation):
   class Arguments:
     id = graphene.ID(required=True)
@@ -201,6 +235,7 @@ class Query(graphene.ObjectType):
   all_playlists = graphene.List(PlaylistType)
   playlist = graphene.Field(PlaylistType, id=graphene.Int(required=True))
 
+  @login_required
   def resolve_all_artists(self, info):
     return Artist.objects.all()
   
@@ -226,6 +261,7 @@ class Query(graphene.ObjectType):
     return Playlist.objects.get(id=id)
 
 class Mutation(graphene.ObjectType):
+  create_user_profile = CreateUserProfile.Field()
   create_artist = CreateArtist.Field()
   create_album = CreateAlbum.Field()
   create_track = CreateTrack.Field()

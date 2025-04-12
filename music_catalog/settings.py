@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'bumbox.apps.BumboxConfig',
     'rest_framework',
     'rest_framework_simplejwt',
-    'graphene_django'
+    'graphene_django',
 ]
 
 MIDDLEWARE = [
@@ -109,8 +109,16 @@ SIMPLE_JWT = {
 }
 
 GRAPHENE = {
-    "SCHEMA": "music_catalog.schema.schema",  # ścieżka do głównego schema.py
+    "SCHEMA": "music_catalog.schema.schema",
+    "MIDDLEWARE": [
+        "graphql_jwt.middleware.JSONWebTokenMiddleware",
+    ],
 }
+
+AUTHENTICATION_BACKENDS = [
+    "graphql_jwt.backends.JSONWebTokenBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
