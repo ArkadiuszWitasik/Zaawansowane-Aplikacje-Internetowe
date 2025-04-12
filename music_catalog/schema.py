@@ -4,4 +4,7 @@ import bumbox.schema
 class Query(bumbox.schema.Query, graphene.ObjectType):
   pass
 
-schema = graphene.Schema(query=Query)
+class Mutation(bumbox.schema.Mutation, graphene.ObjectType):
+  pass
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
