@@ -2,7 +2,19 @@
 <div class="d-flex flex-column">
 	<div class="d-flex justify-content-between">
 		<div class="d-flex flex-row align-items-center">
-			<img src="{{ artist.picture.url }}" style="width: 250px; height: 250px" />
+			{% if artist.picture %}
+			<img
+				src="{{ artist.picture.url }}"
+				class=""
+				style="width: 250px; height: 250px; object-fit: fill"
+			/>
+			{% else %}
+			<img
+				src="https://kellsgardencity.com/wp-content/uploads/2020/10/250X250.png"
+				class=""
+				style="width: 250px; height: 250px; object-fit: fill"
+			/>
+			{% endif %}
 			<p class="w-25">{{artist.description}}</p>
 		</div>
 		{% if user.is_authenticated and user.is_staff %}

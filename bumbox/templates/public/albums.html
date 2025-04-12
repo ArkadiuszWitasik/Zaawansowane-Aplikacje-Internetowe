@@ -13,7 +13,14 @@
 <div class="d-flex mt-5 flex-wrap justify-content-center" style="gap: 20px">
 	{% for album in albums %}
 	<div class="d-flex flex-column border border-secoundary rounded-3">
+		{% if album.picture %}
 		<img src="{{ album.picture.url }}" style="width: 250px; height: 250px" />
+		{% else %}
+		<img
+			src="https://kellsgardencity.com/wp-content/uploads/2020/10/250X250.png"
+			style="width: 250px; height: 250px"
+		/>
+		{% endif %}
 		<h4>{{album.title}}</h4>
 		<h5>Utwory: {{album.track_count}}</h5>
 		<a href="{% url 'album-details' album.pk %}" class="btn btn-outline-primary"

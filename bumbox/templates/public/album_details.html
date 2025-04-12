@@ -2,7 +2,14 @@
 <div class="d-flex flex-column">
 	<div class="d-flex justify-content-between">
 		<div class="d-flex">
+			{% if album.picture %}
 			<img src="{{ album.picture.url }}" style="width: 250px; height: 250px" />
+			{% else %}
+			<img
+				src="https://kellsgardencity.com/wp-content/uploads/2020/10/250X250.png"
+				style="width: 250px; height: 250px"
+			/>
+			{% endif %}
 			<div class="d-flex flex-column justify-content-center">
 				<h2>{{album.title}}</h2>
 				<h4>{{album.genre}}</h4>

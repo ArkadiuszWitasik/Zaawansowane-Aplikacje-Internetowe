@@ -6,11 +6,19 @@
 		class="d-flex flex-column border border-secoundary rounded-3"
 		style="width: 250px; min-height: 500px"
 	>
+		{% if artist.picture %}
 		<img
 			src="{{ artist.picture.url }}"
 			class=""
 			style="width: 250px; height: 250px; object-fit: fill"
 		/>
+		{% else %}
+		<img
+			src="https://kellsgardencity.com/wp-content/uploads/2020/10/250X250.png"
+			class=""
+			style="width: 250px; height: 250px; object-fit: fill"
+		/>
+		{% endif %}
 		<div class="d-flex flex-column h-100 justify-content-between">
 			<h5>{{artist.name}}</h5>
 			<p class="text-start px-2">{{artist.description}}</p>
