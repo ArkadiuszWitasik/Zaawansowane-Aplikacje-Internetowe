@@ -29,7 +29,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bumbox.apps.BumboxConfig',
     'rest_framework',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
+    'graphene_django'
 ]
 
 MIDDLEWARE = [
@@ -105,6 +106,10 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False,
+}
+
+GRAPHENE = {
+    "SCHEMA": "music_catalog.schema.schema",  # ścieżka do głównego schema.py
 }
 
 # Internationalization
