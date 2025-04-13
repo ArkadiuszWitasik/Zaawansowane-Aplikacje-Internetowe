@@ -114,7 +114,7 @@ def track(request, pk):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def playlists(request):
   if request.method == "GET":
     playlists = Playlist.objects.all()
